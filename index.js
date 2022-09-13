@@ -1,4 +1,3 @@
-
 const mail = document.getElementById("email");
 email.addEventListener('input', () => validate(email));
 
@@ -18,6 +17,19 @@ function validate(element){
 function clearAll() {
   localStorage.clear();        // to clear the localStorage data
   displayEntries();
+}
+
+function ageCalculation(dob) {
+    let now = new Date();
+    let birthDay = new Date(dob);
+
+    let age = now.getFullYear() - birthDay.getFullYear();
+    let m = now.getMonth() - birthDay.getMonth();
+
+    if (m < 0 || (m === 0 && now.getDate() < birthDay.getDate())) {
+        age--;
+    }
+    return age;
 }
 
 let userForm = document.getElementById("user-form");
@@ -65,7 +77,12 @@ const saveUserForm = (event) => {
   const password = document.getElementById("password").value;
   const dob = document.getElementById("dob").value;
   const acceptedTermsAndconditions = document.getElementById("acceptTerms").checked;
+  const age = ageCalculation(dob);
 
+  if( age < 18 || age > 55) {
+    alert("Registration age is between 18 and 55");
+    return false;
+  }
   const entry = {
     name,
     email,
